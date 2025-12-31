@@ -14,7 +14,7 @@ async function bootstrap() {
         forbidNonWhitelisted: true, // Throw error if extra properties are sent
         transform: true, // Auto-transform payloads to DTO instances
     }));
-    await app.listen(3001);
+    await app.listen(process.env.PORT || 3001);
     console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
