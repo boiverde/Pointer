@@ -5,8 +5,8 @@ import { AppModule } from './app.module';
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     app.enableCors({
-        origin: ['http://localhost:3000', 'http://localhost:3002'], // Restrict to known frontends (Store and Admin)
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        origin: true, // Allow all origins (Store and Admin on Vercel)
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
         credentials: true,
     });
     app.useGlobalPipes(new ValidationPipe({
