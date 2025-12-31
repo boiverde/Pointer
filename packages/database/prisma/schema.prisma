@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String?
+  role      String   @default("CUSTOMER")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+}
+
+model Brand {
+  id        String    @id @default(uuid())
+  name      String    @unique // Nike, Adidas
+  slug      String    @unique
+  logoUrl   String?
+  products  Product[]
+}
+
+model Team {
+  id        String    @id @default(uuid())
+  name      String    @unique // e.g., "Brazil", "Real Madrid"
+  slug      String    @unique
+  league    String?   // e.g., "Premier League", "World Cup"
+  country   String?   // e.g., "England", "Brazil"
+  logoUrl   String?
+  products  Product[]
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  name        String    // e.g., "Arsenal Home 2024/25"
+  description String
+  slug        String    @unique
+  image       String?
+  basePrice   Decimal
+  
+  brandId     String
+  brand       Brand     @relation(fields: [brandId], references: [id])
+  
+  teamId      String
+  team        Team      @relation(fields: [teamId], references: [id])
+  
+  // Jersey Specifics
+  season      String    // e.g., "2023/24", "2024/25"
+  type        String    @default("HOME") // Home, Away, Third
+  
+  variants    ProductVariant[]
+  
+  isFeatured  Boolean   @default(false)
+  isArchived  Boolean   @default(false)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model ProductVariant {
+  id        String   @id @default(uuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  
+  size      String   // S, M, L, XL, XXL
+  sku       String   @unique
+  stock     Int      @default(0)
+  
+  orderItems     OrderItem[]
+  stockMovements StockMovement[]
+
+  @@unique([productId, size]) // Prevent duplicate sizes for same product
+}
+
+model StockMovement {
+  id        String            @id @default(uuid())
+  variantId String
+  variant   ProductVariant    @relation(fields: [variantId], references: [id])
+  
+  type      String            // Enum matched manually in app
+  quantity  Int               // Positive for add, negative for remove
+  reason    String?           // e.g. "Order #123", "Restock"
+  
+  createdAt DateTime          @default(now())
+}
+
+model Order {
+  id        String      @id @default(uuid())
+  
+  userId    String?     // Nullable for guest checkout
+  user      User?       @relation(fields: [userId], references: [id])
+
+  // Guest Checkout Details
+  customerName  String?
+  customerEmail String?
+  customerPhone String?
+  
+  // Address Details (Stored as fields for simplicity)
+  shippingAddressStreet String?
+  shippingAddressNumber String?
+  shippingAddressZip    String?
+  shippingAddressCity   String?
+  shippingAddressState  String?
+  shippingAddressCountry String?
+
+  status    String      @default("PENDING") // Enum matched manually in app
+  total     Decimal
+  
+  items     OrderItem[]
+  
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String        @id @default(uuid())
+  orderId   String
+  order     Order         @relation(fields: [orderId], references: [id])
+  
+  variantId String
+  variant   ProductVariant @relation(fields: [variantId], references: [id])
+  
+  quantity  Int
+  price     Decimal       // Snapshot of price at time of order
+}
