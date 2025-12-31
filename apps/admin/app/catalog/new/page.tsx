@@ -85,7 +85,7 @@ export default function CreateProductPage() {
             // 4. Redirect
             router.push('/catalog'); // Assuming this exists or will exist. Redirect to home for now if catalog is missing.
         } catch (error) {
-            alert(error.message);
+            alert((error as Error).message);
         } finally {
             setIsLoading(false);
         }
