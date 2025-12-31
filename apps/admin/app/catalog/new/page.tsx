@@ -3,16 +3,26 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { catalogService } from '../../services/catalog.service';
+import { catalogService } from '../../../services/catalog.service';
 import { Save, Loader2, Plus, Minus, ArrowLeft } from 'lucide-react';
+
+interface Team {
+    id: string;
+    name: string;
+}
+
+interface Brand {
+    id: string;
+    name: string;
+}
 
 const AVAILABLE_SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
 
 export default function CreateProductPage() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const [teams, setTeams] = useState([]);
-    const [brands, setBrands] = useState([]);
+    const [teams, setTeams] = useState<Team[]>([]);
+    const [brands, setBrands] = useState<Brand[]>([]);
 
     // Form State
     const [formData, setFormData] = useState({
@@ -27,24 +37,24 @@ export default function CreateProductPage() {
 
     // Stock Grid State: Maps size -> quantity
     // e.g., { 'S': 0, 'M': 5 }
-    const [stockGrid, setStockGrid] = useState(
+    const [stockGrid, setStockGrid] = useState<Record<string, number>>(
         AVAILABLE_SIZES.reduce((acc, size) => ({ ...acc, [size]: 0 }), {})
     );
 
     useEffect(() => {
         // Load dependencies
-        catalogService.getTeams().then(setTeams);
-        catalogService.getBrands().then(setBrands);
+        catalogService.getTeams().then((data: any) => setTeams(data));
+        catalogService.getBrands().then((data: any) => setBrands(data));
     }, []);
 
-    const handleStockChange = (size, type) => {
+    const handleStockChange = (size: string, type: 'inc' | 'dec') => {
         setStockGrid(prev => ({
             ...prev,
-            [size]: Math.max(0, prev[size] + (type === 'inc' ? 1 : -1))
+            [size]: Math.max(0, (prev[size] || 0) + (type === 'inc' ? 1 : -1))
         }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
 
