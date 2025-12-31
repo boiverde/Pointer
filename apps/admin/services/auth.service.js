@@ -1,7 +1,7 @@
 
 import Cookies from 'js-cookie';
 
-const API_URL = 'http://localhost:3001'; // In prod, use env variable
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 const TOKEN_KEY = 'admin_access_token';
 
 export const authService = {

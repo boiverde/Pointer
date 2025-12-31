@@ -154,7 +154,7 @@ function LoginForm() {
 
                         <button
                             type="button"
-                            onClick={() => window.location.href = 'http://localhost:3001/auth/google'}
+                            onClick={() => window.location.href = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/auth/google`}
                             className="w-full bg-white/5 border border-white/10 text-white py-4 rounded-xl font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-3 group"
                         >
                             <svg className="h-5 w-5" width="20" height="20" viewBox="0 0 24 24">
