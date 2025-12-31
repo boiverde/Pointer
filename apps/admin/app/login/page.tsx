@@ -28,7 +28,7 @@ export default function LoginPage() {
         }
     }, [router, searchParams]);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         setError('');
@@ -37,7 +37,7 @@ export default function LoginPage() {
             await authService.login(email, password);
             router.push('/');
         } catch (err) {
-            setError(err.message);
+            setError((err as Error).message);
         } finally {
             setIsLoading(false);
         }
