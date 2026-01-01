@@ -142,30 +142,7 @@ function LoginForm() {
                         </div>
                     </form>
 
-                    <div className="mt-8">
-                        <div className="relative mb-6">
-                            <div className="absolute inset-0 flex items-center">
-                                <span className="w-full border-t border-neutral-800" />
-                            </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-neutral-950 px-2 text-neutral-500">Ou continue com</span>
-                            </div>
-                        </div>
 
-                        <button
-                            type="button"
-                            onClick={() => window.location.href = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/auth/google`}
-                            className="w-full bg-white/5 border border-white/10 text-white py-4 rounded-xl font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-3 group"
-                        >
-                            <svg className="h-5 w-5" width="20" height="20" viewBox="0 0 24 24">
-                                <path fill="#EA4335" d="M24 12.276c0-.85-.076-1.666-.217-2.456H12.273v4.643h6.576c-.283 1.516-1.144 2.802-2.435 3.665v3.047h3.942c2.306-2.123 3.634-5.247 3.634-8.899z" />
-                                <path fill="#34A853" d="M12.273 24c3.3 0 6.069-1.092 8.09-2.956l-3.942-3.047c-1.095.733-2.495 1.168-4.148 1.168-3.183 0-5.877-2.15-6.84-5.043H1.365v3.171C3.39 21.192 7.502 24 12.273 24z" />
-                                <path fill="#FBBC05" d="M5.433 14.122c-.244-.733-.385-1.516-.385-2.327 0-.81.14-1.593.385-2.326V6.298H1.365C.493 8.038 0 10.005 0 12.205c0 2.2.493 4.167 1.365 5.907l4.068-3.99z" />
-                                <path fill="#4285F4" d="M12.273 4.672c1.795 0 3.407.618 4.674 1.826l3.504-3.504C18.337.95 15.57 0 12.273 0 7.502 0 3.39 2.808 1.365 6.298l4.068 3.17C6.396 6.822 9.09 4.672 12.273 4.672z" />
-                            </svg>
-                            Google Workspace
-                        </button>
-                    </div>
 
                     <div className="text-center pt-8 border-t border-neutral-900">
                         <p className="text-xs text-neutral-600">
