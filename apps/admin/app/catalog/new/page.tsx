@@ -134,20 +134,20 @@ export default function CreateProductPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-20">
+        <div className="min-h-screen bg-neutral-100 text-gray-900 pb-20">
             {/* Header */}
             <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
                 <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <button onClick={() => router.back()} className="p-2 -ml-2 hover:bg-gray-100 rounded-full">
+                        <button onClick={() => router.back()} className="p-2 -ml-2 hover:bg-gray-100 rounded-full text-gray-700">
                             <ArrowLeft className="w-5 h-5" />
                         </button>
-                        <h1 className="font-bold text-lg">Novo Produto</h1>
+                        <h1 className="font-bold text-lg text-gray-900">Novo Produto</h1>
                     </div>
                     <button
                         onClick={handleSubmit}
                         disabled={isLoading}
-                        className="bg-black text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-gray-800 disabled:opacity-50"
+                        className="bg-black text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-gray-800 disabled:opacity-50 transition-colors"
                     >
                         {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                         Salvar
@@ -166,7 +166,7 @@ export default function CreateProductPage() {
                         <input
                             type="text"
                             required
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-black outline-none"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none text-black bg-white placeholder:text-gray-400"
                             placeholder="ex: Camisa Brasil Titular 2024"
                             value={formData.name}
                             onChange={e => setFormData({ ...formData, name: e.target.value })}
@@ -175,7 +175,7 @@ export default function CreateProductPage() {
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Foto do Produto</label>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:bg-gray-50 transition-colors cursor-pointer relative">
+                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:bg-gray-50 transition-colors cursor-pointer relative bg-white">
                             <input
                                 type="file"
                                 accept="image/*"
@@ -197,25 +197,25 @@ export default function CreateProductPage() {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
                             <select
-                                className="w-full px-3 py-2 border rounded-lg bg-white text-black"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-black focus:ring-2 focus:ring-black outline-none"
                                 value={formData.teamId}
                                 onChange={e => setFormData({ ...formData, teamId: e.target.value })}
                                 required
                             >
-                                <option value="">Selecione o Time...</option>
-                                {teams.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                                <option value="" className="text-gray-500">Selecione o Time...</option>
+                                {teams.map(t => <option key={t.id} value={t.id} className="text-black">{t.name}</option>)}
                             </select>
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Marca</label>
                             <select
-                                className="w-full px-3 py-2 border rounded-lg bg-white text-black"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-black focus:ring-2 focus:ring-black outline-none"
                                 value={formData.brandId}
                                 onChange={e => setFormData({ ...formData, brandId: e.target.value })}
                                 required
                             >
-                                <option value="">Selecione a Marca...</option>
-                                {brands.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+                                <option value="" className="text-gray-500">Selecione a Marca...</option>
+                                {brands.map(b => <option key={b.id} value={b.id} className="text-black">{b.name}</option>)}
                             </select>
                         </div>
                     </div>
@@ -227,7 +227,7 @@ export default function CreateProductPage() {
                                 type="number"
                                 step="0.01"
                                 required
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-black outline-none"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none text-black bg-white placeholder:text-gray-400"
                                 placeholder="0.00"
                                 value={formData.basePrice}
                                 onChange={e => setFormData({ ...formData, basePrice: e.target.value })}
@@ -237,7 +237,7 @@ export default function CreateProductPage() {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Temporada</label>
                             <input
                                 type="text"
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-black outline-none"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none text-black bg-white placeholder:text-gray-400"
                                 value={formData.season}
                                 onChange={e => setFormData({ ...formData, season: e.target.value })}
                             />
@@ -248,7 +248,7 @@ export default function CreateProductPage() {
                         <label className="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
                         <textarea
                             rows={3}
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-black outline-none resize-none"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none resize-none text-black bg-white placeholder:text-gray-400"
                             placeholder="Detalhes do produto..."
                             value={formData.description}
                             onChange={e => setFormData({ ...formData, description: e.target.value })}
@@ -260,17 +260,17 @@ export default function CreateProductPage() {
                 <section className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                     <div className="flex items-center justify-between border-b border-gray-100 pb-2 mb-4">
                         <h2 className="font-semibold text-gray-900">Estoque e Tamanhos</h2>
-                        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">Controle de Variantes</span>
+                        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full border border-gray-200">Controle de Variantes</span>
                     </div>
 
                     <div className="grid grid-cols-1 gap-3">
                         {AVAILABLE_SIZES.map(size => (
-                            <div key={size} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div key={size} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center font-bold text-sm text-black">
+                                    <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center font-bold text-sm text-gray-900">
                                         {size}
                                     </div>
-                                    <span className="text-sm text-gray-600 font-medium">Quantidade</span>
+                                    <span className="text-sm text-gray-700 font-medium">Quantidade</span>
                                 </div>
 
                                 <div className="flex items-center gap-3">
@@ -281,11 +281,11 @@ export default function CreateProductPage() {
                                     >
                                         <Minus className="w-4 h-4" />
                                     </button>
-                                    <span className="w-8 text-center font-mono font-medium text-black">{stockGrid[size]}</span>
+                                    <span className="w-8 text-center font-mono font-medium text-gray-900">{stockGrid[size]}</span>
                                     <button
                                         type="button"
                                         onClick={() => handleStockChange(size, 'inc')}
-                                        className="w-8 h-8 rounded-md bg-black text-white flex items-center justify-center hover:bg-gray-800 active:scale-95 transition-all"
+                                        className="w-8 h-8 rounded-md bg-neutral-900 text-white flex items-center justify-center hover:bg-black active:scale-95 transition-all"
                                     >
                                         <Plus className="w-4 h-4" />
                                     </button>
