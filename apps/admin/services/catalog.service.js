@@ -1,7 +1,7 @@
 
 import { authService } from './auth.service';
 
-const API_URL = 'http://localhost:3000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 export const catalogService = {
     // Temporary mock until we build the Teams/Brands API endpoints
@@ -21,6 +21,21 @@ export const catalogService = {
             { id: 'brand_adidas_uuid', name: 'Adidas' },
             { id: 'brand_puma_uuid', name: 'Puma' },
         ];
+    },
+
+    async getProducts() {
+        const token = authService.getToken();
+        const response = await fetch(`${API_URL}/products`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch products');
+        }
+
+        return response.json();
     },
 
     async createProduct(productData) {
