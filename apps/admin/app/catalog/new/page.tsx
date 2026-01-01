@@ -134,7 +134,7 @@ export default function CreateProductPage() {
     };
 
     return (
-        <div className="min-h-screen bg-neutral-100 text-gray-900 pb-20">
+        <div className="min-h-screen bg-gray-100 pb-20" style={{ color: 'black' }}>
             {/* Header */}
             <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
                 <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -159,14 +159,15 @@ export default function CreateProductPage() {
 
                 {/* Basic Info Card */}
                 <section className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-4">
-                    <h2 className="font-semibold text-gray-900 border-b border-gray-100 pb-2">Detalhes Básicos</h2>
+                    <h2 className="font-semibold text-gray-900 border-b border-gray-100 pb-2" style={{ color: 'black' }}>Detalhes Básicos</h2>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Nome do Produto</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1" style={{ color: '#374151' }}>Nome do Produto</label>
                         <input
                             type="text"
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none text-black bg-white placeholder:text-gray-400"
+                            style={{ color: 'black' }}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none bg-white placeholder:text-gray-400"
                             placeholder="ex: Camisa Brasil Titular 2024"
                             value={formData.name}
                             onChange={e => setFormData({ ...formData, name: e.target.value })}
@@ -174,7 +175,7 @@ export default function CreateProductPage() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Foto do Produto</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1" style={{ color: '#374151' }}>Foto do Produto</label>
                         <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:bg-gray-50 transition-colors cursor-pointer relative bg-white">
                             <input
                                 type="file"
@@ -195,11 +196,12 @@ export default function CreateProductPage() {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1" style={{ color: '#374151' }}>Time</label>
                             <select
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-black focus:ring-2 focus:ring-black outline-none"
                                 value={formData.teamId}
                                 onChange={e => setFormData({ ...formData, teamId: e.target.value })}
+                                style={{ color: 'black' }}
                                 required
                             >
                                 <option value="" className="text-gray-500">Selecione o Time...</option>
@@ -207,11 +209,12 @@ export default function CreateProductPage() {
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Marca</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1" style={{ color: '#374151' }}>Marca</label>
                             <select
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-black focus:ring-2 focus:ring-black outline-none"
                                 value={formData.brandId}
                                 onChange={e => setFormData({ ...formData, brandId: e.target.value })}
+                                style={{ color: 'black' }}
                                 required
                             >
                                 <option value="" className="text-gray-500">Selecione a Marca...</option>
@@ -222,22 +225,24 @@ export default function CreateProductPage() {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Preço (R$)</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1" style={{ color: '#374151' }}>Preço (R$)</label>
                             <input
                                 type="number"
                                 step="0.01"
                                 required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none text-black bg-white placeholder:text-gray-400"
+                                style={{ color: 'black' }}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none bg-white placeholder:text-gray-400"
                                 placeholder="0.00"
                                 value={formData.basePrice}
                                 onChange={e => setFormData({ ...formData, basePrice: e.target.value })}
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Temporada</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1" style={{ color: '#374151' }}>Temporada</label>
                             <input
                                 type="text"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none text-black bg-white placeholder:text-gray-400"
+                                style={{ color: 'black' }}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none bg-white placeholder:text-gray-400"
                                 value={formData.season}
                                 onChange={e => setFormData({ ...formData, season: e.target.value })}
                             />
@@ -245,10 +250,11 @@ export default function CreateProductPage() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1" style={{ color: '#374151' }}>Descrição</label>
                         <textarea
                             rows={3}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none resize-none text-black bg-white placeholder:text-gray-400"
+                            style={{ color: 'black' }}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none resize-none bg-white placeholder:text-gray-400"
                             placeholder="Detalhes do produto..."
                             value={formData.description}
                             onChange={e => setFormData({ ...formData, description: e.target.value })}
@@ -259,7 +265,7 @@ export default function CreateProductPage() {
                 {/* Stock Grid Card */}
                 <section className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                     <div className="flex items-center justify-between border-b border-gray-100 pb-2 mb-4">
-                        <h2 className="font-semibold text-gray-900">Estoque e Tamanhos</h2>
+                        <h2 className="font-semibold text-gray-900" style={{ color: 'black' }}>Estoque e Tamanhos</h2>
                         <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full border border-gray-200">Controle de Variantes</span>
                     </div>
 
@@ -267,10 +273,10 @@ export default function CreateProductPage() {
                         {AVAILABLE_SIZES.map(size => (
                             <div key={size} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center font-bold text-sm text-gray-900">
+                                    <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center font-bold text-sm text-gray-900" style={{ color: 'black' }}>
                                         {size}
                                     </div>
-                                    <span className="text-sm text-gray-700 font-medium">Quantidade</span>
+                                    <span className="text-sm text-gray-700 font-medium" style={{ color: '#374151' }}>Quantidade</span>
                                 </div>
 
                                 <div className="flex items-center gap-3">
@@ -281,7 +287,7 @@ export default function CreateProductPage() {
                                     >
                                         <Minus className="w-4 h-4" />
                                     </button>
-                                    <span className="w-8 text-center font-mono font-medium text-gray-900">{stockGrid[size]}</span>
+                                    <span className="w-8 text-center font-mono font-medium text-gray-900" style={{ color: 'black' }}>{stockGrid[size]}</span>
                                     <button
                                         type="button"
                                         onClick={() => handleStockChange(size, 'inc')}
