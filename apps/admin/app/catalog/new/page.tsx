@@ -267,7 +267,7 @@ export default function CreateProductPage() {
                         {AVAILABLE_SIZES.map(size => (
                             <div key={size} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center font-bold text-sm">
+                                    <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center font-bold text-sm text-black">
                                         {size}
                                     </div>
                                     <span className="text-sm text-gray-600 font-medium">Quantidade</span>
@@ -281,7 +281,7 @@ export default function CreateProductPage() {
                                     >
                                         <Minus className="w-4 h-4" />
                                     </button>
-                                    <span className="w-8 text-center font-mono font-medium">{stockGrid[size]}</span>
+                                    <span className="w-8 text-center font-mono font-medium text-black">{stockGrid[size]}</span>
                                     <button
                                         type="button"
                                         onClick={() => handleStockChange(size, 'inc')}
