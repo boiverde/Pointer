@@ -148,7 +148,7 @@ export default function CreateProductPage() {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
                             <select
-                                className="w-full px-3 py-2 border rounded-lg bg-white"
+                                className="w-full px-3 py-2 border rounded-lg bg-white text-black"
                                 value={formData.teamId}
                                 onChange={e => setFormData({ ...formData, teamId: e.target.value })}
                                 required
@@ -160,7 +160,7 @@ export default function CreateProductPage() {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Marca</label>
                             <select
-                                className="w-full px-3 py-2 border rounded-lg bg-white"
+                                className="w-full px-3 py-2 border rounded-lg bg-white text-black"
                                 value={formData.brandId}
                                 onChange={e => setFormData({ ...formData, brandId: e.target.value })}
                                 required
