@@ -110,10 +110,15 @@ export default function CreateProductPage() {
             // 3. Prepare Payload
             const payload = {
                 ...formData,
-                image: imageUrl,
+                slug: formData.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, ''),
+                images: imageUrl ? [imageUrl] : [],
                 basePrice: parseFloat(formData.basePrice),
                 variants
             };
+
+            // Remove the singular 'image' property which is not in the DTO
+            // @ts-ignore
+            delete payload.image;
 
             // 4. Send
             await catalogService.createProduct(payload);
