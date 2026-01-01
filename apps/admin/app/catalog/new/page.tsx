@@ -4,7 +4,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { catalogService } from '../../../services/catalog.service';
-import { Save, Loader2, Plus, Minus, ArrowLeft } from 'lucide-react';
+import { Save, Loader2, Plus, Minus, ArrowLeft, UploadCloud } from 'lucide-react';
+import { supabase } from '../../../lib/supabase';
 
 interface Team {
     id: string;
@@ -23,6 +24,8 @@ export default function CreateProductPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [teams, setTeams] = useState<Team[]>([]);
     const [brands, setBrands] = useState<Brand[]>([]);
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
 
     // Form State
     const [formData, setFormData] = useState({
@@ -55,12 +58,43 @@ export default function CreateProductPage() {
         }));
     };
 
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setImageFile(file);
+            setImagePreview(URL.createObjectURL(file));
+        }
+    };
+
+    const uploadImage = async (file: File): Promise<string> => {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+            .from('products')
+            .upload(filePath, file);
+
+        if (uploadError) {
+            throw uploadError;
+        }
+
+        const { data } = supabase.storage.from('products').getPublicUrl(filePath);
+        return data.publicUrl;
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
 
         try {
-            // 1. Transform Grid to Variants Array
+            // 1. Upload Image if exists
+            let imageUrl = formData.image;
+            if (imageFile) {
+                imageUrl = await uploadImage(imageFile);
+            }
+
+            // 2. Transform Grid to Variants Array
             const variants = Object.entries(stockGrid)
                 .filter(([_, qty]) => qty > 0) // Only send sizes with stock? Or create all with 0? Let's create all > 0 for now.
                 .map(([size, quantity]) => ({
@@ -73,20 +107,22 @@ export default function CreateProductPage() {
                 throw new Error("Por favor, adicione estoque para pelo menos um tamanho.");
             }
 
-            // 2. Prepare Payload
+            // 3. Prepare Payload
             const payload = {
                 ...formData,
+                image: imageUrl,
                 basePrice: parseFloat(formData.basePrice),
                 variants
             };
 
-            // 3. Send
+            // 4. Send
             await catalogService.createProduct(payload);
 
-            // 4. Redirect
-            router.push('/catalog'); // Assuming this exists or will exist. Redirect to home for now if catalog is missing.
+            // 5. Redirect
+            router.push('/catalog');
         } catch (error) {
-            alert((error as Error).message);
+            console.error(error);
+            alert('Erro ao salvar produto. Verifique se preencheu tudo.');
         } finally {
             setIsLoading(false);
         }
@@ -133,15 +169,23 @@ export default function CreateProductPage() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">URL da Imagem</label>
-                        <input
-                            type="url"
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-black outline-none font-mono text-sm"
-                            placeholder="https://exemplo.com/imagem-camisa.jpg"
-                            value={formData.image}
-                            onChange={e => setFormData({ ...formData, image: e.target.value })}
-                        />
-                        <p className="text-xs text-gray-500 mt-1">Cole o link direto da imagem aqui.</p>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Foto do Produto</label>
+                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:bg-gray-50 transition-colors cursor-pointer relative">
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                className="absolute inset-0 opacity-0 cursor-pointer"
+                            />
+                            {imagePreview ? (
+                                <img src={imagePreview} alt="Preview" className="h-40 object-contain mb-2" />
+                            ) : (
+                                <UploadCloud className="h-10 w-10 text-gray-400 mb-2" />
+                            )}
+                            <span className="text-sm text-gray-500">
+                                {imagePreview ? 'Clique para alterar a imagem' : 'Clique para fazer upload da imagem'}
+                            </span>
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
