@@ -33,6 +33,7 @@ export default function CreateProductPage() {
         type: 'HOME', // Enum: HOME, AWAY, etc.
         teamId: '',
         brandId: '',
+        image: ''
     });
 
     // Stock Grid State: Maps size -> quantity
@@ -69,7 +70,7 @@ export default function CreateProductPage() {
                 }));
 
             if (variants.length === 0) {
-                throw new Error("Please add stock for at least one size.");
+                throw new Error("Por favor, adicione estoque para pelo menos um tamanho.");
             }
 
             // 2. Prepare Payload
@@ -100,7 +101,7 @@ export default function CreateProductPage() {
                         <button onClick={() => router.back()} className="p-2 -ml-2 hover:bg-gray-100 rounded-full">
                             <ArrowLeft className="w-5 h-5" />
                         </button>
-                        <h1 className="font-bold text-lg">New Product</h1>
+                        <h1 className="font-bold text-lg">Novo Produto</h1>
                     </div>
                     <button
                         onClick={handleSubmit}
@@ -108,7 +109,7 @@ export default function CreateProductPage() {
                         className="bg-black text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-gray-800 disabled:opacity-50"
                     >
                         {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                        Save
+                        Salvar
                     </button>
                 </div>
             </div>
@@ -117,42 +118,54 @@ export default function CreateProductPage() {
 
                 {/* Basic Info Card */}
                 <section className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-4">
-                    <h2 className="font-semibold text-gray-900 border-b border-gray-100 pb-2">Basic Details</h2>
+                    <h2 className="font-semibold text-gray-900 border-b border-gray-100 pb-2">Detalhes Básicos</h2>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Nome do Produto</label>
                         <input
                             type="text"
                             required
                             className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-black outline-none"
-                            placeholder="e.g. Brazil Home Kit 2024"
+                            placeholder="ex: Camisa Brasil Titular 2024"
                             value={formData.name}
                             onChange={e => setFormData({ ...formData, name: e.target.value })}
                         />
                     </div>
 
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">URL da Imagem</label>
+                        <input
+                            type="url"
+                            className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-black outline-none font-mono text-sm"
+                            placeholder="https://exemplo.com/imagem-camisa.jpg"
+                            value={formData.image}
+                            onChange={e => setFormData({ ...formData, image: e.target.value })}
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Cole o link direto da imagem aqui.</p>
+                    </div>
+
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Team</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
                             <select
                                 className="w-full px-3 py-2 border rounded-lg bg-white"
                                 value={formData.teamId}
                                 onChange={e => setFormData({ ...formData, teamId: e.target.value })}
                                 required
                             >
-                                <option value="">Select Team...</option>
+                                <option value="">Selecione o Time...</option>
                                 {teams.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Brand</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Marca</label>
                             <select
                                 className="w-full px-3 py-2 border rounded-lg bg-white"
                                 value={formData.brandId}
                                 onChange={e => setFormData({ ...formData, brandId: e.target.value })}
                                 required
                             >
-                                <option value="">Select Brand...</option>
+                                <option value="">Selecione a Marca...</option>
                                 {brands.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
                             </select>
                         </div>
@@ -160,7 +173,7 @@ export default function CreateProductPage() {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Price (R$)</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Preço (R$)</label>
                             <input
                                 type="number"
                                 step="0.01"
@@ -172,7 +185,7 @@ export default function CreateProductPage() {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Season</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Temporada</label>
                             <input
                                 type="text"
                                 className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-black outline-none"
@@ -183,11 +196,11 @@ export default function CreateProductPage() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
                         <textarea
                             rows={3}
                             className="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-black outline-none resize-none"
-                            placeholder="Product details..."
+                            placeholder="Detalhes do produto..."
                             value={formData.description}
                             onChange={e => setFormData({ ...formData, description: e.target.value })}
                         />
@@ -197,8 +210,8 @@ export default function CreateProductPage() {
                 {/* Stock Grid Card */}
                 <section className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                     <div className="flex items-center justify-between border-b border-gray-100 pb-2 mb-4">
-                        <h2 className="font-semibold text-gray-900">Inventory & Sizes</h2>
-                        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">Variant Control</span>
+                        <h2 className="font-semibold text-gray-900">Estoque e Tamanhos</h2>
+                        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">Controle de Variantes</span>
                     </div>
 
                     <div className="grid grid-cols-1 gap-3">
@@ -208,7 +221,7 @@ export default function CreateProductPage() {
                                     <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center font-bold text-sm">
                                         {size}
                                     </div>
-                                    <span className="text-sm text-gray-600 font-medium">Stock Level</span>
+                                    <span className="text-sm text-gray-600 font-medium">Quantidade</span>
                                 </div>
 
                                 <div className="flex items-center gap-3">
