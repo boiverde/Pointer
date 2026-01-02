@@ -6,21 +6,33 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 export const catalogService = {
     // Temporary mock until we build the Teams/Brands API endpoints
     async getTeams() {
-        // In real app: return authService.fetch('/teams');
-        return [
-            { id: 'team_brazil_uuid_from_seed', name: 'Brazil National Team' },
-            { id: 'team_arsenal_uuid_from_seed', name: 'Arsenal FC' },
-            { id: 'team_flamengo_uuid', name: 'Flamengo' },
-        ];
+        const token = authService.getToken();
+        const response = await fetch(`${API_URL}/products/teams`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch teams');
+        }
+
+        return response.json();
     },
 
     async getBrands() {
-        // In real app: return authService.fetch('/brands');
-        return [
-            { id: 'brand_nike_uuid', name: 'Nike' },
-            { id: 'brand_adidas_uuid', name: 'Adidas' },
-            { id: 'brand_puma_uuid', name: 'Puma' },
-        ];
+        const token = authService.getToken();
+        const response = await fetch(`${API_URL}/products/brands`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch brands');
+        }
+
+        return response.json();
     },
 
     async getProducts() {

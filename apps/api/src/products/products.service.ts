@@ -47,4 +47,12 @@ export class ProductsService {
             },
         });
     }
+
+    async findAllBrands() {
+        return this.prisma.brand.findMany();
+    }
+
+    async findAllTeams() {
+        return this.prisma.team.findMany();
+    }
 }

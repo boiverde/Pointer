@@ -17,6 +17,16 @@ export class ProductsController {
         return this.productsService.findAll();
     }
 
+    @Get('brands')
+    findAllBrands() {
+        return this.productsService.findAllBrands();
+    }
+
+    @Get('teams')
+    findAllTeams() {
+        return this.productsService.findAllTeams();
+    }
+
     @Get(':id')
     findOne(@Param('id') id: string): Promise<any> {
         return this.productsService.findOne(id);
