@@ -205,17 +205,17 @@ export default function CheckoutPage() {
                                 </div>
                             </section>
 
-                            {/* Payment Info (Mocked) */}
+                            {/* Payment Info */}
                             <section className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
                                 <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                                     <span className="w-6 h-6 rounded-full bg-black text-white text-xs flex items-center justify-center">3</span>
-                                    Payment
+                                    Pagamento
                                 </h2>
-                                <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg flex items-center gap-3 opacity-70">
-                                    <Lock className="w-5 h-5 text-gray-500" />
-                                    <span className="text-sm text-gray-600">Secure Payment Gateway (Mocked for Demo)</span>
+                                <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-lg flex items-center gap-3">
+                                    <ShieldCheck className="w-5 h-5 text-emerald-600" />
+                                    <span className="text-sm font-medium text-emerald-900">Pagamento via PIX (Processamento Seguro)</span>
                                 </div>
-                                <p className="text-xs text-gray-400 mt-2 ml-1">You will not be charged. This is a simulation.</p>
+                                <p className="text-xs text-gray-500 mt-2 ml-1">Após finalizar o pedido, você receberá o QR Code para pagamento.</p>
                             </section>
                         </form>
                     </div>
@@ -223,20 +223,21 @@ export default function CheckoutPage() {
                     {/* RIGHT COLUMN - SUMMARY */}
                     <div className="lg:col-span-5">
                         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-lg lg:sticky lg:top-24">
-                            <h3 className="text-lg font-bold mb-4">Order Summary</h3>
+                            <h3 className="text-lg font-bold mb-4">Resumo do Pedido</h3>
 
                             <div className="divide-y divide-gray-100 max-h-[300px] overflow-y-auto mb-4">
                                 {items.map(item => (
                                     <div key={item.variantId} className="flex gap-4 py-4">
-                                        <div className="w-16 h-16 bg-gray-100 rounded-md shrink-0 flex items-center justify-center font-bold text-gray-300 border">
-                                            {item.team?.charAt(0)}
+                                        <div className="w-16 h-16 bg-gray-100 rounded-md shrink-0 flex items-center justify-center font-bold text-gray-300 border overflow-hidden relative">
+                                            {/* TODO: Add image to cart item type so we can display it here */}
+                                            <span className="text-xs uppercase">{item.team?.substring(0, 2) || 'JP'}</span>
                                         </div>
                                         <div className="flex-1">
                                             <div className="flex justify-between items-start">
                                                 <p className="text-sm font-medium text-gray-900 line-clamp-2">{item.name}</p>
                                                 <p className="text-sm font-bold">R$ {(item.price * item.quantity).toFixed(2)}</p>
                                             </div>
-                                            <p className="text-xs text-gray-500 mt-1">Size: {item.size} | Qty: {item.quantity}</p>
+                                            <p className="text-xs text-gray-500 mt-1">Tamanho: {item.size} | Qtd: {item.quantity}</p>
                                         </div>
                                     </div>
                                 ))}

@@ -30,15 +30,27 @@ export function ProductCard({ product }: { product: any }) {
 
                 {/* Main Image */}
                 <div className="relative h-full w-full transition-transform duration-700 group-hover:scale-105 group-hover:brightness-110">
-                    {/* Mockup Placeholder - In real app use <Image /> */}
-                    <div className="w-full h-full bg-neutral-800 flex flex-col items-center justify-center relative">
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity duration-500" />
-
-                        {/* Dynamic Letter/Icon based on Team */}
-                        <span className="text-8xl font-black text-white/5 group-hover:text-white/10 transition-colors uppercase select-none">
-                            {product.team?.name?.substring(0, 2) || 'FC'}
-                        </span>
-                    </div>
+                    {product.images && product.images.length > 0 ? (
+                        <div className="relative w-full h-full">
+                            <Image
+                                src={product.images[0]}
+                                alt={product.name}
+                                fill
+                                className="object-cover object-center"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            />
+                            {/* Hover Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        </div>
+                    ) : (
+                        /* Fallback Placeholder */
+                        <div className="w-full h-full bg-neutral-800 flex flex-col items-center justify-center relative">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity duration-500" />
+                            <span className="text-8xl font-black text-white/5 group-hover:text-white/10 transition-colors uppercase select-none">
+                                {product.team?.name?.substring(0, 2) || 'FC'}
+                            </span>
+                        </div>
+                    )}
                 </div>
             </div>
 
