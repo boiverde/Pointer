@@ -76,27 +76,60 @@ export class DashboardService {
         const chartData = this.processChartData(ordersLast7Days);
 
         // 7. Top Teams (by Sales)
-        // Group by Team Name? Need to join OrderItem -> Variant -> Product -> Team
-        // Prisma API doesn't support deep relations in groupBy easily.
-        // We will fetch all order items or use raw query. Raw is best here.
-        // Let's mock this part for now with real-ish logic or just fetch recent distinct teams.
-        // Actually, let's try a raw query for "Top Selling Teams".
+        // Group by Team Name. 
+        // Logic: OrderItem -> Product -> Team
+        // We need to sum up OrderItem.quantity or calculate value. Usually "sales" means volume or revenue. Let's do volume (count) for now.
+        // Prisma doesn't support deep groupBy nicely, so we fetch OrderItems with Product.Team and aggregate in JS.
+        // For performance in large scale, use raw SQL. For now, JS is fine.
 
-        // For now, returning mocked team data to avoid SQL errors until I verify SQLite date syntax
-        const teamData = [
-            { name: 'Flamengo', sales: 450 },
-            { name: 'Palmeiras', sales: 380 },
-            { name: 'São Paulo', sales: 320 },
-            { name: 'Real Madrid', sales: 290 },
-            { name: 'Man. City', sales: 250 },
-        ];
+        const orderItemsForTeams = await this.prisma.orderItem.findMany({
+            where: {
+                order: { status: { not: 'CANCELLED' } }
+            },
+            include: {
+                variant: {
+                    include: {
+                        product: {
+                            include: { team: true }
+                        }
+                    }
+                }
+            }
+        });
 
-        const sizeData = [
-            { name: 'M', value: 450 },
-            { name: 'G', value: 380 },
-            { name: 'P', value: 210 },
-            { name: 'GG', value: 150 },
-        ];
+        const teamSalesMap = new Map<string, number>();
+        orderItemsForTeams.forEach(item => {
+            const teamName = item.variant?.product?.team?.name || 'Outros';
+            const current = teamSalesMap.get(teamName) || 0;
+            teamSalesMap.set(teamName, current + item.quantity);
+        });
+
+        const teamData = Array.from(teamSalesMap.entries())
+            .map(([name, sales]) => ({ name, sales }))
+            .sort((a, b) => b.sales - a.sales)
+            .slice(0, 5); // Top 5
+
+        // 8. Size Distribution
+        // Logic: OrderItem -> Variant.size
+        const orderItemsForSizes = await this.prisma.orderItem.findMany({
+            where: {
+                order: { status: { not: 'CANCELLED' } }
+            },
+            include: {
+                variant: true
+            }
+        });
+
+        const sizeMap = new Map<string, number>();
+        orderItemsForSizes.forEach(item => {
+            const size = item.variant?.size || 'N/A';
+            const current = sizeMap.get(size) || 0;
+            sizeMap.set(size, current + item.quantity);
+        });
+
+        const sizeData = Array.from(sizeMap.entries())
+            .map(([name, value]) => ({ name, value }))
+            .sort((a, b) => b.value - a.value);
 
         return {
             totalRevenue,
@@ -114,23 +147,14 @@ export class DashboardService {
         const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
         const dataMap = new Map<string, number>();
 
-        // Initialize last 7 days with 0
-        for (let i = 6; i >= 0; i--) {
-            const d = new Date();
-            d.setDate(d.getDate() - i);
-            const dayName = days[d.getDay()];
-            dataMap.set(dayName, 0); // Note: this overwrites if day names repeat (unlikely in 7 days unless crossing week)
-            // But 'Dom' appears once a week. 
-            // Better key: date string
-        }
-
-        // Re-init with correct order
+        // Key by date string to handle week boundaries correctly
         const result = [];
         for (let i = 6; i >= 0; i--) {
             const d = new Date();
             d.setDate(d.getDate() - i);
             const dayName = days[d.getDay()];
-            result.push({ name: dayName, total: 0, dateStr: d.toDateString() });
+            const dateStr = d.toDateString();
+            result.push({ name: dayName, total: 0, dateStr });
         }
 
         orders.forEach(order => {
