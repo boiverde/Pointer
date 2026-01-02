@@ -12,11 +12,15 @@ export class ProductsService {
     constructor(private prisma: PrismaService) { }
 
     async create(createProductDto: CreateProductDto): Promise<any> {
-        const { variants, ...productData } = createProductDto;
+        const { variants, images, ...productData } = createProductDto;
+
+        // Map first image from array to the single 'image' field in DB schema
+        const image = images && images.length > 0 ? images[0] : null;
 
         return this.prisma.product.create({
             data: {
                 ...productData,
+                image: image, // Use the singular field
                 variants: {
                     create: variants,
                 },

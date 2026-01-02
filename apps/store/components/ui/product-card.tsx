@@ -1,6 +1,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { Shirt } from 'lucide-react';
 // import { cn } from '../../lib/utils'; // Assuming cn exists or reusing class strings
 
 export function ProductCard({ product }: { product: any }) {
@@ -30,10 +31,10 @@ export function ProductCard({ product }: { product: any }) {
 
                 {/* Main Image */}
                 <div className="relative h-full w-full transition-transform duration-700 group-hover:scale-105 group-hover:brightness-110">
-                    {product.images && product.images.length > 0 ? (
+                    {product.image || (product.images && product.images.length > 0) ? (
                         <div className="relative w-full h-full">
                             <Image
-                                src={product.images[0]}
+                                src={product.image || product.images[0]}
                                 alt={product.name}
                                 fill
                                 className="object-cover object-center"
@@ -43,12 +44,13 @@ export function ProductCard({ product }: { product: any }) {
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </div>
                     ) : (
-                        /* Fallback Placeholder */
-                        <div className="w-full h-full bg-neutral-800 flex flex-col items-center justify-center relative">
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity duration-500" />
-                            <span className="text-8xl font-black text-white/5 group-hover:text-white/10 transition-colors uppercase select-none">
-                                {product.team?.name?.substring(0, 2) || 'FC'}
-                            </span>
+                        /* Fallback Placeholder (Professional Icon) */
+                        <div className="w-full h-full bg-neutral-900 flex flex-col items-center justify-center relative p-12">
+                            <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-50" />
+                            <Shirt className="w-full h-full text-neutral-800 stroke-[0.5]" />
+                            <div className="absolute bottom-8 opacity-40">
+                                <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-500 font-bold">Sem Foto</span>
+                            </div>
                         </div>
                     )}
                 </div>
