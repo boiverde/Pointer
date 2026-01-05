@@ -53,6 +53,7 @@ model Product {
   // Jersey Specifics
   season      String    // e.g., "2023/24", "2024/25"
   type        String    @default("HOME") // Home, Away, Third
+  category    String?   // 'national-teams' (Seleções), 'clubs' (Europa), 'brasileirao'
   
   variants    ProductVariant[]
   
