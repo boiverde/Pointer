@@ -1,5 +1,5 @@
 
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 
@@ -13,8 +13,14 @@ export class ProductsController {
     }
 
     @Get()
-    findAll(): Promise<any> {
-        return this.productsService.findAll();
+    findAll(
+        @Query('category') category?: string,
+        @Query('isFeatured') isFeatured?: string,
+    ): Promise<any> {
+        return this.productsService.findAll({
+            category,
+            isFeatured: isFeatured === 'true' ? true : undefined
+        });
     }
 
     @Get('brands')

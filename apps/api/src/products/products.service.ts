@@ -33,8 +33,13 @@ export class ProductsService {
         });
     }
 
-    async findAll(): Promise<Product[]> {
+    async findAll(params?: { category?: string; isFeatured?: boolean }): Promise<Product[]> {
+        const { category, isFeatured } = params || {};
         return this.prisma.product.findMany({
+            where: {
+                ...(category ? { category } : {}),
+                ...(isFeatured !== undefined ? { isFeatured } : {}),
+            },
             include: {
                 variants: true,
                 brand: true,
