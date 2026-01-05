@@ -64,8 +64,23 @@ export default function CatalogPage() {
                                     </td>
                                     <td className="p-4">R$ {Number(product.basePrice).toFixed(2)}</td>
                                     <td className="p-4">{product.season}</td>
-                                    <td className="p-4 text-right">
+                                    <td className="p-4 text-right flex justify-end gap-2">
                                         <button className="text-emerald-400 hover:text-emerald-300">Editar</button>
+                                        <button
+                                            onClick={async () => {
+                                                if (confirm('Tem certeza que deseja excluir este produto?')) {
+                                                    try {
+                                                        await catalogService.deleteProduct(product.id);
+                                                        loadProducts();
+                                                    } catch (e) {
+                                                        alert('Erro ao excluir produto');
+                                                    }
+                                                }
+                                            }}
+                                            className="text-red-400 hover:text-red-300 px-3"
+                                        >
+                                            Excluir
+                                        </button>
                                     </td>
                                 </tr>
                             ))}

@@ -67,5 +67,21 @@ export const catalogService = {
         }
 
         return response.json();
+    },
+
+    async deleteProduct(id) {
+        const token = authService.getToken();
+        const response = await fetch(`${API_URL}/products/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete product');
+        }
+
+        return response.json();
     }
 };

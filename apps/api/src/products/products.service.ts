@@ -59,4 +59,10 @@ export class ProductsService {
     async findAllTeams() {
         return this.prisma.team.findMany();
     }
+
+    async remove(id: string): Promise<Product> {
+        return this.prisma.product.delete({
+            where: { id },
+        });
+    }
 }
