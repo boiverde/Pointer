@@ -61,8 +61,14 @@ export class ProductsService {
     }
 
     async remove(id: string): Promise<Product> {
-        return this.prisma.product.delete({
-            where: { id },
-        });
+        const [_, deletedProduct] = await this.prisma.$transaction([
+            this.prisma.productVariant.deleteMany({
+                where: { productId: id },
+            }),
+            this.prisma.product.delete({
+                where: { id },
+            }),
+        ]);
+        return deletedProduct;
     }
 }
