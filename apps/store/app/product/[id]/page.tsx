@@ -1,4 +1,3 @@
-
 'use client';
 
 import { use, useEffect, useState } from 'react';
@@ -20,18 +19,32 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
     useEffect(() => {
         getProductById(id).then(data => {
+            if (!data) {
+                console.error("Produto retornou null da API");
+            }
             setProduct(data);
             setLoading(false);
         }).catch(err => {
-            // Handle error (e.g., product not found)
+            console.error("Erro ao carregar produto:", err);
             setLoading(false);
         });
     }, [id]);
 
-    if (loading) return <div className="min-h-screen bg-black flex items-center justify-center text-white">Carregando...</div>;
-    if (!product) return <div className="min-h-screen bg-black flex items-center justify-center text-white">Produto não encontrado</div>;
+    if (loading) return <div className="min-h-screen bg-black flex items-center justify-center text-white">Carregando detalhes...</div>;
+    
+    // Fallback melhorado se produto for null ou undefined
+    if (!product) {
+        return (
+            <div className="min-h-screen bg-black flex flex-col items-center justify-center text-white gap-4">
+                <h1 className="text-xl font-bold">Produto não encontrado</h1>
+                <Link href="/collections/all" className="text-primary hover:underline">
+                    Voltar para a Loja
+                </Link>
+            </div>
+        );
+    }
 
-    const currentVariant = product.variants.find((v: any) => v.id === selectedVariant);
+    const currentVariant = product.variants?.find((v: any) => v.id === selectedVariant);
     const isOutOfStock = (variant: any) => variant.stock === 0;
 
     const handleAddToCart = () => {
@@ -43,13 +56,19 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
             name: product.name,
             price: Number(product.basePrice),
             image: product.image,
-            size: currentVariant.size, // Assuming size is on variant
-            team: product.team.name,
+            size: currentVariant?.size || 'U', 
+            team: product.team?.name || 'Time',
             quantity: 1
         });
         openCart();
         setTimeout(() => setIsAdding(false), 500);
     };
+
+    // Dados seguros para renderização
+    const teamName = product.team?.name || 'Time';
+    const brandName = product.brand?.name || 'Marca';
+    const price = Number(product.basePrice || 0);
+    const image = product.image;
 
     return (
         <main className="min-h-screen bg-black text-white pt-24 pb-12">
@@ -75,12 +94,23 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                                 </div>
                             )}
 
-                            {/* Image Placeholder */}
-                            <div className="w-full h-full flex flex-col items-center justify-center relative bg-gradient-to-b from-neutral-800 to-neutral-900">
-                                <span className="text-[120px] md:text-[180px] font-black text-white/5 uppercase select-none leading-none">
-                                    {product.team.name.substring(0, 3)}
-                                </span>
-                            </div>
+                            {/* Image Placeholder or Real Image */}
+                            {image ? (
+                                <Image 
+                                    src={image} 
+                                    alt={product.name} 
+                                    fill 
+                                    className="object-cover"
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    priority
+                                />
+                            ) : (
+                                <div className="w-full h-full flex flex-col items-center justify-center relative bg-gradient-to-b from-neutral-800 to-neutral-900">
+                                    <span className="text-[120px] md:text-[180px] font-black text-white/5 uppercase select-none leading-none">
+                                        {teamName.substring(0, 3)}
+                                    </span>
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -89,9 +119,9 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
                         {/* Brand & Team */}
                         <div className="mb-2 flex items-center gap-3">
-                            <span className="text-primary font-bold tracking-widest uppercase text-xs">{product.brand.name}</span>
+                            <span className="text-primary font-bold tracking-widest uppercase text-xs">{brandName}</span>
                             <span className="w-1 h-1 rounded-full bg-neutral-600"></span>
-                            <span className="text-neutral-400 font-bold tracking-widest uppercase text-xs">{product.team.name}</span>
+                            <span className="text-neutral-400 font-bold tracking-widest uppercase text-xs">{teamName}</span>
                         </div>
 
                         {/* Title */}
@@ -102,10 +132,10 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                         {/* Price */}
                         <div className="mb-8 flex items-baseline gap-4">
                             <span className="text-3xl md:text-4xl font-bold text-white tracking-tight">
-                                R$ {Number(product.basePrice).toFixed(2).replace('.', ',')}
+                                R$ {price.toFixed(2).replace('.', ',')}
                             </span>
                             <div className="text-sm text-neutral-400">
-                                <p>ou 3x de <span className="text-white">R$ {(Number(product.basePrice) / 3).toFixed(2).replace('.', ',')}</span> sem juros</p>
+                                <p>ou 3x de <span className="text-white">R$ {(price / 3).toFixed(2).replace('.', ',')}</span> sem juros</p>
                             </div>
                         </div>
 
@@ -120,7 +150,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                             </div>
 
                             <div className="grid grid-cols-4 md:grid-cols-5 gap-3">
-                                {product.variants.map((variant: any) => {
+                                {product.variants?.map((variant: any) => {
                                     const outOfStock = isOutOfStock(variant);
                                     const isSelected = selectedVariant === variant.id;
 
