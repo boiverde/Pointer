@@ -3,8 +3,18 @@ import { getProducts } from '../../../lib/api';
 import { ProductCard } from '../../../components/ui/product-card';
 import { Filter, ChevronDown } from 'lucide-react';
 
-export default async function CatalogPage() {
-    const products = await getProducts(); // In a real app, pass searchParams for filtering
+export default async function CatalogPage({ searchParams }: { searchParams: { category?: string } }) {
+    const category = searchParams?.category;
+    const products = await getProducts({ category });
+
+    const getTitle = () => {
+        switch (category) {
+            case 'national-teams': return 'SELEÇÕES';
+            case 'clubs': return 'EUROPA / CLUBES';
+            case 'brasileirao': return 'BRASILEIRÃO';
+            default: return 'TODAS AS CAMISAS';
+        }
+    };
 
     return (
         <main className="min-h-screen bg-black pt-28 pb-20">
@@ -17,11 +27,12 @@ export default async function CatalogPage() {
                             Coleção
                         </span>
                         <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[0.9]">
-                            TODAS AS CAMISAS
+                            {getTitle()}
                         </h1>
                         <p className="text-neutral-400 max-w-lg text-sm md:text-base leading-relaxed">
-                            Descubra os últimos kits dos maiores clubes do mundo.
-                            Produtos oficiais, qualidade autêntica e designs lendários.
+                            {category
+                                ? 'Os mantos sagrados dos maiores times e seleções do mundo.'
+                                : 'Descubra os últimos kits dos maiores clubes do mundo. Produtos oficiais e autênticos.'}
                         </p>
                     </div>
 
@@ -33,7 +44,7 @@ export default async function CatalogPage() {
                         </button>
                         <div className="h-6 w-[1px] bg-white/10 hidden md:block"></div>
                         <button className="flex items-center gap-2 px-4 py-2 text-neutral-400 hover:text-white transition-colors text-xs font-medium uppercase tracking-wider">
-                            Ordernar por: <span className="text-white">Mais Recentes</span>
+                            Ordenar por: <span className="text-white">Mais Recentes</span>
                             <ChevronDown className="w-3 h-3" />
                         </button>
                     </div>
@@ -48,10 +59,11 @@ export default async function CatalogPage() {
                     </div>
                 ) : (
                     <div className="py-32 flex flex-col items-center justify-center border border-dashed border-white/5 rounded-2xl bg-white/[0.02]">
-                        <p className="text-white/40 font-medium">Nenhum produto encontrado.</p>
-                        <button className="mt-4 text-primary text-sm underline decoration-1 underline-offset-4">Limpar filtros</button>
+                        <p className="text-white/40 font-medium">Nenhum produto encontrado nesta categoria.</p>
+                        <a href="/collections/all" className="mt-4 text-primary text-sm underline decoration-1 underline-offset-4">Ver todos</a>
                     </div>
                 )}
+// ... rest remains same ...
 
                 {/* Pagination / Load More (Visual only for now) */}
                 <div className="mt-20 flex justify-center">
