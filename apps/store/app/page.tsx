@@ -86,7 +86,7 @@ export default function Home() {
                                 <Trophy className="w-8 h-8 md:w-12 md:h-12 text-yellow-500 mb-4 md:mb-6 drop-shadow-lg" />
                                 <h3 className="text-3xl md:text-5xl font-black uppercase italic tracking-tighter mb-2">Seleções</h3>
                                 <p className="text-neutral-300 font-medium max-w-md text-sm md:text-lg">Os mantos sagrados das maiores potências do futebol mundial.</p>
-                                <Link href="/collections/national-teams" className="absolute inset-0" />
+                                <Link href="/collections/all?category=national-teams" className="absolute inset-0" />
                             </div>
                         </div>
 
@@ -118,7 +118,7 @@ export default function Home() {
                                     <div className="h-1 w-12 bg-blue-500 rounded-full group-hover:w-24 transition-all duration-300" />
                                     <ArrowRight className="w-5 h-5 md:w-6 md:h-6 -rotate-45 group-hover:rotate-0 transition-transform text-white/50 group-hover:text-blue-400" />
                                 </div>
-                                <Link href="/collections/clubs" className="absolute inset-0" />
+                                <Link href="/collections/all?category=clubs" className="absolute inset-0" />
                             </div>
                         </div>
 
@@ -152,7 +152,7 @@ export default function Home() {
                                     </div>
                                     <ArrowRight className="w-5 h-5 md:w-6 md:h-6 -rotate-45 group-hover:rotate-0 transition-transform text-white/50 group-hover:text-yellow-400" />
                                 </div>
-                                <Link href="/collections/brasileirao" className="absolute inset-0" />
+                                <Link href="/collections/all?category=brasileirao" className="absolute inset-0" />
                             </div>
                         </div>
                     </div>
