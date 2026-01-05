@@ -61,6 +61,23 @@ export default function CreateProductPage() {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
+
+            // Validação de Tipo
+            const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+                alert('Formato inválido. Por favor envie apenas JPG, PNG ou WEBP.');
+                e.target.value = ''; // Limpa o input
+                return;
+            }
+
+            // Validação de Tamanho (Máx 2MB)
+            const maxSize = 2 * 1024 * 1024; // 2MB
+            if (file.size > maxSize) {
+                alert('Arquivo muito grande. O tamanho máximo permitido é 2MB.');
+                e.target.value = ''; // Limpa o input
+                return;
+            }
+
             setImageFile(file);
             setImagePreview(URL.createObjectURL(file));
         }
