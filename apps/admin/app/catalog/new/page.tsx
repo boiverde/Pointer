@@ -36,7 +36,9 @@ export default function CreateProductPage() {
         type: 'HOME', // Enum: HOME, AWAY, etc.
         teamId: '',
         brandId: '',
-        image: ''
+        image: '',
+        category: 'national-teams',
+        isFeatured: false
     });
 
     // Stock Grid State: Maps size -> quantity
@@ -177,6 +179,35 @@ export default function CreateProductPage() {
                 {/* Basic Info Card */}
                 <section className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-4">
                     <h2 className="font-semibold text-gray-900 border-b border-gray-100 pb-2" style={{ color: 'black' }}>Detalhes Básicos</h2>
+
+                    <div className="flex items-center gap-2 mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <input
+                            type="checkbox"
+                            id="isFeatured"
+                            className="w-5 h-5 rounded border-gray-300 text-black focus:ring-black"
+                            checked={formData.isFeatured}
+                            onChange={e => setFormData({ ...formData, isFeatured: e.target.checked })}
+                        />
+                        <label htmlFor="isFeatured" className="text-sm font-medium text-gray-900 cursor-pointer">
+                            Marcar como DESTAQUE (Latest Drops)
+                        </label>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1" style={{ color: '#374151' }}>Categoria / Coleção</label>
+                        <select
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-black focus:ring-2 focus:ring-black outline-none"
+                            value={formData.category}
+                            onChange={e => setFormData({ ...formData, category: e.target.value })}
+                            style={{ color: 'black' }}
+                            required
+                        >
+                            <option value="national-teams">Seleções</option>
+                            <option value="clubs">Europa / Clubes</option>
+                            <option value="brasileirao">Brasileirão</option>
+                            <option value="other">Outros</option>
+                        </select>
+                    </div>
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1" style={{ color: '#374151' }}>Nome do Produto</label>
