@@ -196,7 +196,10 @@ export default function Home() {
 
 // Server Component for fetching products
 async function FeaturedProducts() {
-    const products = await getProducts();
+    // Only fetch products marked as isFeatured
+    // We fetch a bit more just in case, but usually backend filters strictly
+    const products = await getProducts({ isFeatured: true });
+    // Limit to 4 for the homepage display
     const featuredProducts = products.slice(0, 4);
 
     return (
