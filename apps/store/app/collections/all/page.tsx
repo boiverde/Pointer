@@ -3,8 +3,8 @@ import { getProducts } from '../../../lib/api';
 import { ProductCard } from '../../../components/ui/product-card';
 import { Filter, ChevronDown } from 'lucide-react';
 
-export default async function CatalogPage({ searchParams }: { searchParams: { category?: string } }) {
-    const category = searchParams?.category;
+export default async function CatalogPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
+    const { category } = await searchParams;
     const products = await getProducts({ category });
 
     const getTitle = () => {
