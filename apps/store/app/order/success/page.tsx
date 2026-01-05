@@ -24,7 +24,20 @@ function ConfirmationContent() {
                 <div className="p-8 space-y-6">
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
                         <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-1">ID do Pedido</p>
-                        <p className="text-xl font-mono font-bold text-gray-900">{orderId || 'PENDENTE'}</p>
+                        <p className="text-xl font-mono font-bold text-gray-900 mb-6">{orderId || 'PENDENTE'}</p>
+
+                        <div className="bg-white p-4 rounded-xl border-2 border-dashed border-emerald-500/30 inline-block mb-4">
+                            {/* QR Code Pattern Mock */}
+                            <div className="w-48 h-48 bg-gray-900 p-1 flex items-center justify-center relative overflow-hidden">
+                                <div className="absolute inset-0 bg-white p-2">
+                                    <div className="w-full h-full bg-[url('https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=ExamplePayment')] bg-contain bg-center bg-no-repeat opacity-90" />
+                                </div>
+                                {/* Scan Line Animation */}
+                                <div className="absolute top-0 left-0 w-full h-1 bg-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.5)] animate-scan-y" />
+                            </div>
+                        </div>
+                        <p className="text-sm font-bold text-emerald-700">Pagamento via PIX</p>
+                        <p className="text-xs text-gray-400 mt-1">Escaneie para finalizar (Demonstração)</p>
                     </div>
 
                     <p className="text-sm text-gray-600 text-center leading-relaxed">
