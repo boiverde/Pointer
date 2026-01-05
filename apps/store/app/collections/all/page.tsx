@@ -63,7 +63,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: { ca
                         <a href="/collections/all" className="mt-4 text-primary text-sm underline decoration-1 underline-offset-4">Ver todos</a>
                     </div>
                 )}
-// ... rest remains same ...
+
 
                 {/* Pagination / Load More (Visual only for now) */}
                 <div className="mt-20 flex justify-center">
